@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\elimv\\Git Repos\\BlockBiz\\contracts\\BlockBiz.sol": {
-      "lastModificationDate": 1640485026283,
-      "contentHash": "b59aa0d6f877b73f46825b2ea1078fce",
+      "lastModificationDate": 1640492510112,
+      "contentHash": "a5de0a30a796e8998aea8776452b1ea6",
       "sourceName": "contracts/BlockBiz.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -30,6 +30,7 @@
       },
       "imports": [
         "./IERC20.sol",
+        "./safemath.sol",
         "hardhat/console.sol"
       ],
       "versionPragmas": [

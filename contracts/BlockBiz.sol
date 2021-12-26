@@ -1,16 +1,20 @@
-/// @title Contract that handles business equity related functions
+// SPDX-License-Identifier: MIT
+
+/// @title Contract that handles business equity using ERC20 standard
 /// @author Elim Poon
 /// @notice My personal project
 
 pragma solidity ^0.8.0;
 
 import "./IERC20.sol";
+import "./safemath.sol";
 import "hardhat/console.sol";
 
 contract BlockBiz {
     /// @dev Still in development
 
     string private companyName;
+    uint private companyShares;
     mapping(address => uint) private sharesHeldBy;
 
     event NewBlockBizCreated(string, uint);
@@ -18,7 +22,8 @@ contract BlockBiz {
     /// @notice Creates the BlockBiz instance with the company name and initial no. of shares
     constructor(string memory _companyName, uint _initShares) {
         companyName = _companyName;
-        sharesHeldBy[msg.sender] = _initShares;
+        companyShares = _initShares;
+        sharesHeldBy[msg.sender] = companyShares;
 
         emit NewBlockBizCreated(_companyName, _initShares);
     }
@@ -28,8 +33,21 @@ contract BlockBiz {
         return address(this).balance;
     }
 
-    /// @return the no. of shares held by msg.sender
-    function getSharesHeldBy(address _shareholder) public view returns(uint) {
+    function totalSupply() external view returns (uint256) {
+        return companyShares;
+    }
+
+    /// @return the no. of shares held by shareholder
+    function balanceOf(address _shareholder) external view returns (uint256) {
         return sharesHeldBy[_shareholder];
+    }
+
+    function transfer(address _recipient, uint256 _shares) external returns (bool) {
+        require(sharesHeldBy[msg.sender] >= _shares);
+
+        sharesHeldBy[msg.sender] -= _shares;
+        sharesHeldBy[_recipient] += _shares;
+
+        return true;
     }
 }
