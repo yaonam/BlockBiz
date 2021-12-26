@@ -9,7 +9,7 @@ describe("BlockBiz contract", function () {
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
 
         shares = Number(100);
-        hardhatBlockBiz = await BlockBiz.deploy("Hello", shares);
+        hardhatBlockBiz = await BlockBiz.deploy("Hello", "hi", shares);
     });
   
     describe("Deployment", function () {

@@ -8,3 +8,6 @@ npx hardhat
 
 Install Waffle and Chai
 npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffle ethereum-waffle chai
+
+Install OpenZeppelin/contracts
+npm install @openzeppelin/contracts
