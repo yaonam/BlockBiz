@@ -1,4 +1,4 @@
-/// @title Contract that handles equity ownership
+/// @title Contract that handles business equity related functions
 /// @author Elim Poon
 /// @notice My personal project
 
@@ -6,22 +6,28 @@ pragma solidity ^0.7.0;
 
 import "hardhat/console.sol";
 
-contract BlockBiz {    
+contract BlockBiz {
     /// @dev Still in development
 
     string public companyName;
-    mapping(address => uint) sharesHeldBy; 
+    mapping(address => uint) sharesHeldBy;
+    event NewBlockBizCreated(string, uint);
 
-    constructor(string memory _companyName, uint _initShares) public payable {
+    /// @notice Creates the BlockBiz instance with the company name and initial no. of shares
+    constructor(string memory _companyName, uint _initShares) {
         companyName = _companyName;
         sharesHeldBy[msg.sender] = _initShares;
+
+        emit NewBlockBizCreated(_companyName, _initShares);
     }
 
-    function getBalance() public view returns(uint){
+    /// @return the company's assets (crypto balance)
+    function getBalance() public view returns(uint) {
         return address(this).balance;
     }
 
-    function getSharesHeldBy(address _shareholder) public view returns(uint){
+    /// @return the no. of shares held by msg.sender
+    function getSharesHeldBy(address _shareholder) public view returns(uint) {
         return sharesHeldBy[_shareholder];
     }
 }
