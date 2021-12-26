@@ -12,7 +12,7 @@ contract BlockBiz {
     string public companyName;
     mapping(address => uint) sharesHeldBy; 
 
-    constructor(string memory _companyName, uint _initShares) payable {
+    constructor(string memory _companyName, uint _initShares) public payable {
         companyName = _companyName;
         sharesHeldBy[msg.sender] = _initShares;
     }
