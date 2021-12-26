@@ -10,6 +10,6 @@ describe("BlockBiz contract", function () {
 
     const hardhatBlockBiz = await BlockBiz.deploy("Hello", shares);
 
-    expect(await hardhatBlockBiz.getBalance()).to.equal(shares);
+    expect(await hardhatBlockBiz.getSharesHeldBy(owner.address)).to.equal(shares);
   });
 });

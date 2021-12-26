@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\elimv\\Git Repos\\BlockBiz\\contracts\\BlockBiz.sol": {
-      "lastModificationDate": 1640480493870,
-      "contentHash": "09b41f8099ae155e023ab06d00032d96",
+      "lastModificationDate": 1640481204286,
+      "contentHash": "774e8e541bba4bed95fc63982f888f57",
       "sourceName": "contracts/BlockBiz.sol",
       "solcConfig": {
         "version": "0.7.3",
