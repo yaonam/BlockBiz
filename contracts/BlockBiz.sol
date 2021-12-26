@@ -2,7 +2,7 @@
 /// @author Elim Poon
 /// @notice My personal project
 
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.0;
 
 import "./IERC20.sol";
 import "hardhat/console.sol";
