@@ -4,13 +4,15 @@
 
 pragma solidity ^0.7.0;
 
+import "./IERC20.sol";
 import "hardhat/console.sol";
 
 contract BlockBiz {
     /// @dev Still in development
 
-    string public companyName;
-    mapping(address => uint) sharesHeldBy;
+    string private companyName;
+    mapping(address => uint) private sharesHeldBy;
+
     event NewBlockBizCreated(string, uint);
 
     /// @notice Creates the BlockBiz instance with the company name and initial no. of shares
