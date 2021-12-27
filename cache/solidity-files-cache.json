@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\elimv\\Git Repos\\BlockBiz\\contracts\\BlockBiz.sol": {
-      "lastModificationDate": 1640495848733,
-      "contentHash": "de7e7777e04af7b8f9af6c60d2b31064",
+      "lastModificationDate": 1640560005969,
+      "contentHash": "8b13c4fb3cd92fb9fc074188c9850399",
       "sourceName": "contracts/BlockBiz.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -30,7 +30,7 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "./safemath.sol",
+        "./motion.sol",
         "hardhat/console.sol"
       ],
       "versionPragmas": [
@@ -254,6 +254,43 @@
       ],
       "artifacts": [
         "Context"
+      ]
+    },
+    "C:\\Users\\elimv\\Git Repos\\BlockBiz\\contracts\\motion.sol": {
+      "lastModificationDate": 1640565773522,
+      "contentHash": "81004cc1d4f49200b236b034c5a8e161",
+      "sourceName": "contracts/motion.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Motion"
       ]
     }
   }
