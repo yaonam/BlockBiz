@@ -3,8 +3,6 @@ const { expect } = require("chai");
 
 describe("Motion contract", function () {
     let shares;
-    let tokenAddr;
-    let key;
 
     beforeEach(async function () {
         // Get the ContractFactory and Signers here.
@@ -20,9 +18,10 @@ describe("Motion contract", function () {
   
     describe("Proposal", function () {
         it("should create a new motion entry using specified token.", async function () {
-            tokenAddr = hhBlockBiz.address;
-            key = (await hhMotion.proposeMotion("Hello", tokenAddr)).hash;
-            console.log(key);
+            const tokenAddr = hhBlockBiz.address;
+            const key = await hhMotion.createKey("Hello", tokenAddr);
+            await hhMotion.proposeMotion(key,"Hello",tokenAddr);
+
             expect(await hhMotion.getName(key)).to.equal("Hello");
             expect(await hhMotion.getYays(key)).to.equal(0);
             expect(await hhMotion.getNays(key)).to.equal(0);
@@ -31,12 +30,13 @@ describe("Motion contract", function () {
 
     describe("Voting", function () {
         it("should update the yays and nays count based on shares held by msg.sender.", async function () {
-            tokenAddr = hhBlockBiz.address;
-            key = (await hhMotion.proposeMotion("Hello", tokenAddr)).hash;
-            hhMotion.vote(key,true);
-            console.log(key);
+            const tokenAddr = hhBlockBiz.address;
+            const key = await hhMotion.createKey("Hello", tokenAddr);
+            await hhMotion.proposeMotion(key,"Hello",tokenAddr);
+            await hhMotion.vote(key,true);
+            
             expect(await hhMotion.getYays(key)).to.equal(100);
-            expect(await hhMotion.getYays(key)).to.equal(0);
+            expect(await hhMotion.getNays(key)).to.equal(0);
         })
     })
 });

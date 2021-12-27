@@ -14,28 +14,48 @@ contract Motion{
     enum MotionState{ongoing, passed, rejected}
     struct MotionInfo {
         string name;
-        ERC20 votingToken;
+        address tokenAddr;
         uint yays;
         uint nays;
         MotionState state;
     }
 
     mapping (bytes32 => MotionInfo) private motions;
+    address[] voted;
 
-    event MotionProposed(string indexed _name, bytes32 indexed key);
+    event MotionCreated(bytes32 indexed key);
 
-    function proposeMotion(string memory _name, address _token) external returns (bytes32){
-        bytes32 key = keccak256(abi.encodePacked(block.timestamp, _name, msg.sender)); // Create key for motion identification
-        motions[key] = MotionInfo(_name, ERC20(_token), 0, 0, MotionState.ongoing); // Instatiate motion
-
-        emit MotionProposed(_name, key);
-        console.log(key);
-        return key;
+    function createKey(string memory _name, address _tokenAddr) external view returns (bytes32) {
+        return keccak256(abi.encodePacked(block.timestamp,_name,_tokenAddr,msg.sender));
     }
 
-    // function getMotionInfo(uint _key) external view returns (MotionInfo memory){
-    //     return motions[_key];
-    // }
+    function proposeMotion(bytes32 _key, string memory _name, address _tokenAddr) external {        
+        motions[_key] = MotionInfo(_name, _tokenAddr, 0, 0, MotionState.ongoing); // Instantiate motion
+        
+        emit MotionCreated(_key);
+    }
+
+    function vote(bytes32 _key, bool _for) external {
+        MotionInfo memory motionInfo = motions[_key];
+        console.log(ERC20(motionInfo.tokenAddr).balanceOf(msg.sender));
+        if (_for) { // Vote yay
+            motionInfo.yays = motionInfo.yays + ERC20(motionInfo.tokenAddr).balanceOf(msg.sender);
+        } else { // Vote nay
+            motionInfo.nays = motionInfo.nays + ERC20(motionInfo.tokenAddr).balanceOf(msg.sender);
+        }
+        motions[_key] = motionInfo;
+    }
+
+    function countVote(bytes32 _key) external {
+        MotionInfo memory motionInfo = motions[_key];
+        uint requiredVotes = ERC20(motionInfo.tokenAddr).totalSupply()/2;
+        if (motionInfo.yays >= requiredVotes) { // Motion passed
+            motionInfo.state = MotionState.passed;
+        } else if (motionInfo.nays >= requiredVotes) { // Motion rejected
+            motionInfo.state = MotionState.rejected;
+        }
+        motions[_key] = motionInfo;
+    }
     
     function getName(bytes32 _key) external view returns (string memory) {
         return motions[_key].name;
@@ -47,14 +67,5 @@ contract Motion{
 
     function getNays(bytes32 _key) external view returns (uint) {
         return motions[_key].nays;
-    }
-
-    function vote(bytes32 _key, bool _for) external payable {
-        MotionInfo memory motionInfo = motions[_key];
-        if (_for) { // Vote yay
-            motionInfo.yays += motionInfo.votingToken.balanceOf(msg.sender);
-        } else { // Vote nay
-            motionInfo.nays += motionInfo.votingToken.balanceOf(msg.sender);
-        }
     }
 }
