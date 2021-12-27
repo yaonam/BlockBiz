@@ -29,14 +29,18 @@ describe("Motion contract", function () {
     });
 
     describe("Voting", function () {
-        it("should update the yays and nays count based on shares held by msg.sender.", async function () {
+        it("should update the yays and nays count based on shares deposited by msg.sender.", async function () {
             const tokenAddr = hhBlockBiz.address;
             const key = await hhMotion.createKey("Hello", tokenAddr);
+            const votes = 25;
             await hhMotion.proposeMotion(key,"Hello",tokenAddr);
-            await hhMotion.vote(key,true);
+            await hhBlockBiz.approve(hhMotion.address,votes);
+            await hhMotion.vote(key,true,votes);
             
-            expect(await hhMotion.getYays(key)).to.equal(100);
+            expect(await hhMotion.getYays(key)).to.equal(25);
             expect(await hhMotion.getNays(key)).to.equal(0);
+            expect(await hhBlockBiz.balanceOf(owner.address)).to.equal(75);
+            expect(await hhBlockBiz.balanceOf(hhMotion.address)).to.equal(25);
         })
     })
 });

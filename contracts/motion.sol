@@ -17,11 +17,11 @@ contract Motion{
         address tokenAddr;
         uint yays;
         uint nays;
-        MotionState state;
+        MotionState state;        
     }
 
-    mapping (bytes32 => MotionInfo) private motions;
-    address[] voted;
+    mapping(bytes32 => MotionInfo) private motions; // Track motions
+    mapping(bytes32 => mapping(address => uint)) voters; // Track voters
 
     event MotionCreated(bytes32 indexed key);
 
@@ -29,25 +29,28 @@ contract Motion{
         return keccak256(abi.encodePacked(block.timestamp,_name,_tokenAddr,msg.sender));
     }
 
-    function proposeMotion(bytes32 _key, string memory _name, address _tokenAddr) external {        
+    function proposeMotion(bytes32 _key, string memory _name, address _tokenAddr) external {
         motions[_key] = MotionInfo(_name, _tokenAddr, 0, 0, MotionState.ongoing); // Instantiate motion
         
         emit MotionCreated(_key);
     }
 
-    function vote(bytes32 _key, bool _for) external {
+    function vote(bytes32 _key, bool _for, uint _tokens) external {
         MotionInfo memory motionInfo = motions[_key];
-        console.log(ERC20(motionInfo.tokenAddr).balanceOf(msg.sender));
+        require(motionInfo.state == MotionState.ongoing, "Motion has already been completed");
+        ERC20(motionInfo.tokenAddr).transferFrom(msg.sender, address(this), _tokens); // Deposit tokens from voter
+        voters[_key][msg.sender] = voters[_key][msg.sender] + _tokens; // Record tokens deposited
         if (_for) { // Vote yay
-            motionInfo.yays = motionInfo.yays + ERC20(motionInfo.tokenAddr).balanceOf(msg.sender);
+            motionInfo.yays = motionInfo.yays + _tokens;
         } else { // Vote nay
-            motionInfo.nays = motionInfo.nays + ERC20(motionInfo.tokenAddr).balanceOf(msg.sender);
+            motionInfo.nays = motionInfo.nays + _tokens;
         }
         motions[_key] = motionInfo;
     }
 
     function countVote(bytes32 _key) external {
         MotionInfo memory motionInfo = motions[_key];
+        require(motionInfo.state == MotionState.ongoing, "Motion has already been completed");
         uint requiredVotes = ERC20(motionInfo.tokenAddr).totalSupply()/2;
         if (motionInfo.yays >= requiredVotes) { // Motion passed
             motionInfo.state = MotionState.passed;
@@ -55,6 +58,13 @@ contract Motion{
             motionInfo.state = MotionState.rejected;
         }
         motions[_key] = motionInfo;
+    }
+
+    function returnTokens(bytes32 _key) external {
+        MotionInfo memory motionInfo = motions[_key];
+        require(motionInfo.state != MotionState.ongoing, "Motion still in process");
+        ERC20(motionInfo.tokenAddr).transfer(msg.sender, voters[_key][msg.sender]); // Transfer back the tokens
+        voters[_key][msg.sender] = 0;
     }
     
     function getName(bytes32 _key) external view returns (string memory) {
