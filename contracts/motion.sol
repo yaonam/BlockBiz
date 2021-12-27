@@ -7,10 +7,12 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "hardhat/console.sol";
 
 contract Motion{
-    // string private description;
+    using SafeMath for uint;
+
     enum MotionState{ongoing, passed, rejected}
     struct MotionInfo {
         string name;
@@ -21,7 +23,7 @@ contract Motion{
     }
 
     mapping(bytes32 => MotionInfo) private motions; // Track motions
-    mapping(bytes32 => mapping(address => uint)) voters; // Track voters
+    mapping(bytes32 => mapping(address => uint)) private voters; // Track voters
 
     event MotionCreated(bytes32 indexed key);
 
@@ -39,11 +41,12 @@ contract Motion{
         MotionInfo memory motionInfo = motions[_key];
         require(motionInfo.state == MotionState.ongoing, "Motion has already been completed");
         ERC20(motionInfo.tokenAddr).transferFrom(msg.sender, address(this), _tokens); // Deposit tokens from voter
-        voters[_key][msg.sender] = voters[_key][msg.sender] + _tokens; // Record tokens deposited
+        voters[_key][msg.sender] = voters[_key][msg.sender].add(_tokens); // Record tokens deposited
+
         if (_for) { // Vote yay
-            motionInfo.yays = motionInfo.yays + _tokens;
+            motionInfo.yays = motionInfo.yays.add(_tokens);
         } else { // Vote nay
-            motionInfo.nays = motionInfo.nays + _tokens;
+            motionInfo.nays = motionInfo.nays.add(_tokens);
         }
         motions[_key] = motionInfo;
     }
@@ -77,5 +80,9 @@ contract Motion{
 
     function getNays(bytes32 _key) external view returns (uint) {
         return motions[_key].nays;
+    }
+
+    function isCompleted(bytes32 _key) external view returns (bool) {
+        return (motions[_key].state != MotionState.ongoing);
     }
 }

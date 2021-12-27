@@ -75,41 +75,6 @@
         "console"
       ]
     },
-    "C:\\Users\\elimv\\Git Repos\\BlockBiz\\contracts\\safemath.sol": {
-      "lastModificationDate": 1640485030978,
-      "contentHash": "474bf66fb7c8b7faeaea9442c5ca5d91",
-      "sourceName": "contracts/safemath.sol",
-      "solcConfig": {
-        "version": "0.8.0",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "SafeMath"
-      ]
-    },
     "C:\\Users\\elimv\\Git Repos\\BlockBiz\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\ERC20.sol": {
       "lastModificationDate": 1640494219213,
       "contentHash": "f48de0eaae9544072b8766e2eac528a7",
@@ -257,8 +222,8 @@
       ]
     },
     "C:\\Users\\elimv\\Git Repos\\BlockBiz\\contracts\\motion.sol": {
-      "lastModificationDate": 1640632892151,
-      "contentHash": "ff5508c903173c1ec0af56031bf0909e",
+      "lastModificationDate": 1640635951568,
+      "contentHash": "bd91a1a2ba860833bcf3dc89bd8cbdc8",
       "sourceName": "contracts/motion.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -285,6 +250,7 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
         "hardhat/console.sol"
       ],
       "versionPragmas": [
@@ -292,6 +258,41 @@
       ],
       "artifacts": [
         "Motion"
+      ]
+    },
+    "C:\\Users\\elimv\\Git Repos\\BlockBiz\\node_modules\\@openzeppelin\\contracts\\utils\\math\\SafeMath.sol": {
+      "lastModificationDate": 1640494219273,
+      "contentHash": "a6a9d6c1f662e922b82c1ba4d81cdd48",
+      "sourceName": "@openzeppelin/contracts/utils/math/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SafeMath"
       ]
     }
   }
