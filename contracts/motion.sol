@@ -7,6 +7,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "hardhat/console.sol";
 
 contract Motion{
     // string private description;
@@ -28,26 +29,32 @@ contract Motion{
         motions[key] = MotionInfo(_name, ERC20(_token), 0, 0, MotionState.ongoing); // Instatiate motion
 
         emit MotionProposed(_name, key);
+        console.log(key);
         return key;
     }
 
     // function getMotionInfo(uint _key) external view returns (MotionInfo memory){
     //     return motions[_key];
     // }
+    
+    function getName(bytes32 _key) external view returns (string memory) {
+        return motions[_key].name;
+    }
 
     function getYays(bytes32 _key) external view returns (uint) {
         return motions[_key].yays;
     }
 
-    // function getNays(uint _key) external view returns (uint) {
-    //     return motions[_key].nays;
-    // }
+    function getNays(bytes32 _key) external view returns (uint) {
+        return motions[_key].nays;
+    }
 
     function vote(bytes32 _key, bool _for) external payable {
+        MotionInfo memory motionInfo = motions[_key];
         if (_for) { // Vote yay
-            motions[_key].yays += 1;
+            motionInfo.yays += motionInfo.votingToken.balanceOf(msg.sender);
         } else { // Vote nay
-            motions[_key].nays += 1;
+            motionInfo.nays += motionInfo.votingToken.balanceOf(msg.sender);
         }
     }
 }
