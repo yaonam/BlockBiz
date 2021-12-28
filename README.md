@@ -11,3 +11,6 @@ npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffl
 
 Install OpenZeppelin/contracts
 npm install @openzeppelin/contracts
+
+<!-- Install web3
+npm install web3 -->
