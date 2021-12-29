@@ -32,9 +32,7 @@ contract Motion{
     }
 
     function proposeMotion(bytes32 _key, string memory _name, address _tokenAddr) external {
-        console.log("got into function");
         motions[_key] = MotionInfo(_name, _tokenAddr, 0, 0, MotionState.ongoing); // Instantiate motion
-        console.log("got past function");
         
         emit MotionCreated(_key);
     }
