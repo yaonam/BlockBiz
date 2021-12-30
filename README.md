@@ -25,7 +25,7 @@ npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffl
 
 ## Usage
 
-```js
+```javascript
 tokenAddr = <Address of ERC20 token>;
 
 // Create a key
