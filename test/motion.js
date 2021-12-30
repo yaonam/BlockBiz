@@ -20,7 +20,6 @@ describe("Motion contract", function () {
 
         shares = Number(100);
         hhBlockBiz = await BlockBiz.deploy("Hello", "hi", shares);
-        hhBlockBiz2 = await BlockBiz.deploy("Hello", "hi", shares);
         hhMotion = await Motion.deploy();
         tokenAddr = hhBlockBiz.address;
 
