@@ -36,13 +36,13 @@ votes = 0;
 // Record your account nonce (not fully implemented yet)
 nonce = 0;
 
-// 1. Create a key
+// 1. Create a key (hhMotion is contract abstraction)
 key = await hhMotion.createKey(name, tokenAddr);
 
 // 2. Propose the motion
 await hhMotion.proposeMotion(key,name,tokenAddr);
 
-// 3. Set allowance of tokens to contract
+// 3. Set allowance of tokens to contract (hhBlockBiz is token abstraction)
 await hhBlockBiz.approve(hhMotion.address,votes);
 
 // 4. Create signed message offchain
