@@ -37,7 +37,11 @@ contract Motion{
         emit MotionCreated(_key);
     }
 
-    function getSignedMsgHash(
+    function getMsgHash(bytes32 _key, bool _for, uint _tokens, uint _nonce) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(_key, _for, _tokens, _nonce));
+    }
+
+    function getEthSignedMsgHash(
         bytes32 _key, 
         bool _for, 
         uint _tokens, 
@@ -45,10 +49,10 @@ contract Motion{
     ) public pure returns (bytes32) {
         return keccak256(abi.encodePacked(
             "\x19Ethereum Signed Message:\n32",
-            keccak256(abi.encodePacked(_key, _for, _tokens, _nonce))));
+            getMsgHash(_key, _for, _tokens, _nonce)));
     }
 
-    function vote(bytes32 _key, bool _for, uint _tokens, bytes memory signature, uint _nonce) external {
+    function vote(bytes32 _key, bool _for, uint _tokens, uint _nonce, bytes memory signature) external {
         MotionInfo storage motionInfo = motions[_key];
         require(motionInfo.state == MotionState.ongoing, "Motion: Motion has already been completed");
         require(verify(msg.sender, _key, _for, _tokens, _nonce, signature), "Motion: Invalid signature");
@@ -91,15 +95,15 @@ contract Motion{
         uint _nonce,
         bytes memory signature
     ) internal pure returns (bool) {
-        bytes32 ethSignedMessageHash = getSignedMsgHash(_key, _for, _tokens, _nonce);
+        bytes32 ethSignedMsgHash = getEthSignedMsgHash(_key, _for, _tokens, _nonce);
 
-        return recoverSigner(ethSignedMessageHash, signature) == _signer;
+        return recoverSigner(ethSignedMsgHash, signature) == _signer;
     }
 
-    function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature) internal pure returns (address) {
+    function recoverSigner(bytes32 _ethSignedMsgHash, bytes memory _signature) internal pure returns (address) {
         (bytes32 r, bytes32 s, uint8 v) = splitSignature(_signature);
 
-        return ecrecover(_ethSignedMessageHash, v, r, s);
+        return ecrecover(_ethSignedMsgHash, v, r, s);
     }
 
     function splitSignature(bytes memory sig) internal pure

@@ -1,12 +1,11 @@
 const { expect } = require("chai");
-const Web3 = require("web3");
 
 describe("Motion contract", function () {
     let shares;
     let tokenAddr;
     let key;
-    let staticKey;
-    let staticSig;
+    let votes;
+    let signedMsg;
 
     before(async function () {
         BlockBiz = await ethers.getContractFactory("BlockBiz");
@@ -25,52 +24,47 @@ describe("Motion contract", function () {
         hhMotion = await Motion.deploy();
         tokenAddr = hhBlockBiz.address;
 
-        // For voting using static vars
-        const test = await owner.signMessage("Test");
-        console.log("Success!");
-        console.log(test);
-        // await hhMotion.proposeMotion(staticKey, "Hello", tokenAddr);
+        // Create motion
+        key = await hhMotion.createKey("Hello", tokenAddr);
+        await hhMotion.proposeMotion(key,"Hello",tokenAddr);
+
+        // For voting
+        votes = 75;
+        await hhBlockBiz.approve(hhMotion.address,votes);
+        msgHash = await hhMotion.getMsgHash(key,true,75,1);
+        signedMsg = await owner.signMessage(ethers.utils.arrayify(msgHash));
     });
   
     describe("Proposal", function () {
         it("should create a new motion entry using specified token.", async function () {
-            key = await hhMotion.createKey("Hello", tokenAddr);
-            await hhMotion.proposeMotion(key,"Hello",tokenAddr);
-
             expect(await hhMotion.getName(key)).to.equal("Hello");
             expect(await hhMotion.getYays(key)).to.equal(0);
             expect(await hhMotion.getNays(key)).to.equal(0);
         });
     });
 
-    // describe("Voting", function () {
-    //     it("should update the yays and nays count based on shares deposited by msg.sender.", async function () {
-    //         const votes = 75;
-    //         await hhBlockBiz.approve(hhMotion.address,votes);
-    //         await hhMotion.vote(staticKey,true,votes,staticSig,1);
+    describe("Voting", function () {
+        it("should update the yays and nays count based on shares deposited by msg.sender.", async function () {
+            await hhMotion.vote(key,true,votes,1,signedMsg);
             
-    //         expect(await hhMotion.getYays(staticKey)).to.equal(75);
-    //         expect(await hhMotion.getNays(staticKey)).to.equal(0);
-    //         expect(await hhBlockBiz.balanceOf(owner.address)).to.equal(25);
-    //         expect(await hhBlockBiz.balanceOf(hhMotion.address)).to.equal(75);
-    //     })
-    //     it("should complete when required votes are reached.", async function () {
-    //         const votes = 75;
-    //         await hhBlockBiz.approve(hhMotion.address,votes);
-    //         await hhMotion.vote(staticKey,true,votes,staticSig,1);
-    //         await hhMotion.countVote(staticKey);
+            expect(await hhMotion.getYays(key)).to.equal(75);
+            expect(await hhMotion.getNays(key)).to.equal(0);
+            expect(await hhBlockBiz.balanceOf(owner.address)).to.equal(25);
+            expect(await hhBlockBiz.balanceOf(hhMotion.address)).to.equal(75);
+        })
+        it("should complete when required votes are reached.", async function () {
+            await hhMotion.vote(key,true,votes,1,signedMsg);
+            await hhMotion.countVote(key);
             
-    //         expect(await hhMotion.isCompleted(staticKey)).to.equal(true);
-    //     })
-    //     it("should return tokens when motion completed.", async function () {
-    //         const votes = 75;
-    //         await hhBlockBiz.approve(hhMotion.address,votes);
-    //         await hhMotion.vote(staticKey,true,votes,staticSig,1);
-    //         await hhMotion.countVote(staticKey);
-    //         await hhMotion.returnTokens(staticKey);
+            expect(await hhMotion.isCompleted(key)).to.equal(true);
+        })
+        it("should return tokens when motion completed.", async function () {
+            await hhMotion.vote(key,true,votes,1,signedMsg);
+            await hhMotion.countVote(key);
+            await hhMotion.returnTokens(key);
             
-    //         expect(await hhBlockBiz.balanceOf(owner.address)).to.equal(100);
-    //         expect(await hhBlockBiz.balanceOf(hhMotion.address)).to.equal(0);
-    //     })
-    // })
+            expect(await hhBlockBiz.balanceOf(owner.address)).to.equal(100);
+            expect(await hhBlockBiz.balanceOf(hhMotion.address)).to.equal(0);
+        })
+    })
 });
