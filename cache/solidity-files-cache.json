@@ -220,8 +220,8 @@
       ]
     },
     "C:\\Users\\elimv\\Git Repos\\BlockBiz\\contracts\\motion.sol": {
-      "lastModificationDate": 1640728733006,
-      "contentHash": "6300893cf0b2ac930b973ff08db570e6",
+      "lastModificationDate": 1640799575784,
+      "contentHash": "65f583e37525ded690490ce3c0105628",
       "sourceName": "contracts/motion.sol",
       "solcConfig": {
         "version": "0.8.0",

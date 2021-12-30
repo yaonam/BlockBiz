@@ -25,7 +25,10 @@ describe("Motion contract", function () {
         hhMotion = await Motion.deploy();
         tokenAddr = hhBlockBiz.address;
 
-        // // For voting using static vars
+        // For voting using static vars
+        const test = await owner.signMessage("Test");
+        console.log("Success!");
+        console.log(test);
         // await hhMotion.proposeMotion(staticKey, "Hello", tokenAddr);
     });
   
