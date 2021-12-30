@@ -26,27 +26,35 @@ npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffl
 ## Usage
 
 ```javascript
-tokenAddr = <Address of ERC20 token>;
+// 0. Set variables
+// Input token address
+tokenAddr = "0x000000000123hello";
+// Create name for the motion
+name = "Hello";
+// Decide number of votes/tokens
+votes = 0;
+// Record your account nonce (not fully implemented yet)
+nonce = 0;
 
-// Create a key
-key = await hhMotion.createKey(<Name of motion>, tokenAddr);
+// 1. Create a key
+key = await hhMotion.createKey(name, tokenAddr);
 
-// Propose the motion
-await hhMotion.proposeMotion(key,<Name of motion>,tokenAddr);
+// 2. Propose the motion
+await hhMotion.proposeMotion(key,name,tokenAddr);
 
-// Set allowance of tokens to contract
-await hhBlockBiz.approve(hhMotion.address,<Number of votes>);
+// 3. Set allowance of tokens to contract
+await hhBlockBiz.approve(hhMotion.address,votes);
 
-// Create signed message offchain
-msgHash = await hhMotion.getMsgHash(key,true,<Number of votes>,<Nonce>);
+// 4. Create signed message offchain
+msgHash = await hhMotion.getMsgHash(key,true,votes,nonce);
 signedMsg = await owner.signMessage(ethers.utils.arrayify(msgHash));
 
-// Submit vote
-await hhMotion.vote(key,true,<Number of votes>,<Nonce>,signedMsg);
+// 5. Submit vote
+await hhMotion.vote(key,true,votes,nonce,signedMsg);
 
-// End motion
+// 6. End motion
 await hhMotion.countVote(key);
 
-// Retrieve deposited tokens
+// 7. Retrieve deposited tokens
 await hhMotion.returnTokens(key);
 ```
