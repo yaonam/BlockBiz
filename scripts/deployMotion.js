@@ -6,8 +6,8 @@ async function main() {
   
     const Motion = await ethers.getContractFactory("Motion");
     const overrides = {
-        gasPrice: Number(1500000000), // One Gwei
-        // nonce: 4
+        gasPrice: Number(3000000000), // Units of Gwei
+        nonce: 4
     }
     const dMotion = await Motion.deploy(overrides);
   
