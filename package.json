@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.1",
+    "dotenv": "^10.0.0",
     "web3": "^1.6.1"
   }
 }

@@ -11,6 +11,10 @@ Install OpenZeppelin/contracts
 ```
 npm install @openzeppelin/contracts
 ```
+Install dotenv
+```
+npm install dotenv --save
+```
 
 ### [Optional?] For development purposes:
 

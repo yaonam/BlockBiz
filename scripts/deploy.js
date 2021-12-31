@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 async function main() {
     const [deployer] = await ethers.getSigners();
   
@@ -9,6 +11,7 @@ async function main() {
     const dBlockBiz = await BlockBiz.deploy("Hello","HI",1000000);
   
     console.log("BlockBiz address:", dBlockBiz.address);
+    console.log(process.env.blah);
   }
   
   main()
