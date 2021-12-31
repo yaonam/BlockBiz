@@ -2,6 +2,11 @@
 
 BlockBiz is a universal token-based voting system. Users can create motions and deposit their tokens to vote. When enough votes are accumulated (1/2 of totalSupply for now), users can close the motion and retrieve their tokens.
 
+### Ropsten Testnet Deployment
+
+BlockBiz("Hello","HI",1000000) Address: 0xefeD3Ba4D7df45D4f3B6cabF0Ba21Aa83b1276C1
+BlockBiz("BlockBiz","BB",1000000) Address: 0xCF3542Fd45BDF91d30D266b2a60d90e03cBdDDfB
+
 ## Installation
 
 ### Navigate to project directory.

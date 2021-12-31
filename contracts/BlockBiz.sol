@@ -27,5 +27,9 @@ contract BlockBiz is ERC20{
         emit NewBlockBizCreated(name_, _initShares);
     }
 
+    function decimals() public view virtual override returns (uint8) {
+        return 0;
+    }
+
     //function raiseCapital();
 }

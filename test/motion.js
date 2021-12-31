@@ -10,8 +10,6 @@ describe("Motion contract", function () {
     before(async function () {
         BlockBiz = await ethers.getContractFactory("BlockBiz");
         Motion = await ethers.getContractFactory("Motion");
-        // staticKey = "0xdb5d809640af22006bc130470ec6c0ed7d7e04ec172e748c1d7e4c4eb8cf80c9";
-        // staticSig = "0xbb5ffb2ebb33180e3fb53f093ec9ba20fd5720b18b4bba775455045f9e57be61";
     })
     
     beforeEach(async function () {
