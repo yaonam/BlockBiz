@@ -6,6 +6,7 @@ BlockBiz is a universal token-based voting system. Users can create motions and 
 
 BlockBiz("Hello","HI",1000000) Address: 0xefeD3Ba4D7df45D4f3B6cabF0Ba21Aa83b1276C1
 BlockBiz("BlockBiz","BB",1000000) Address: 0xCF3542Fd45BDF91d30D266b2a60d90e03cBdDDfB
+Motion() Address: 0x547ccbb93bB0C6411Bb56FD5838D4173BA415024
 
 ## Installation
 
@@ -34,7 +35,7 @@ npm install --save-dev @nomiclabs/hardhat-ethers ethers @nomiclabs/hardhat-waffl
 
 ## Usage
 
-```javascript
+```js
 // 0. Set variables
 // Input token address
 tokenAddr = "0x000000000123hello";
@@ -66,4 +67,17 @@ await hhMotion.countVote(key);
 
 // 7. Retrieve deposited tokens
 await hhMotion.returnTokens(key);
+```
+
+## Local testing
+
+```
+// Create local blockchain
+npx hardhat node
+
+// Deploy contracts
+npx hardhat run --network localhost scripts/deploy.js
+
+// Open console
+npx hardhat console --network localhost
 ```
