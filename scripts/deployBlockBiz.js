@@ -6,10 +6,10 @@ async function main() {
   
     const BlockBiz = await ethers.getContractFactory("BlockBiz");
     const overrides = {
-        gasPrice: Number(1000000000), // One Gwei
+        // gasPrice: Number(1000000000), // One Gwei
         // nonce: 2
     }
-    const dBlockBiz = await BlockBiz.deploy("BlockBiz","BB",1000000,overrides);
+    const dBlockBiz = await BlockBiz.deploy("BlockBiz","BB",1000000000,overrides);
   
     console.log("BlockBiz address:", dBlockBiz.address);
   }
