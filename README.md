@@ -84,4 +84,11 @@ npx hardhat run --network localhost scripts/deploy.js
 
 // Open console
 npx hardhat console --network localhost
+
+// Instantiate contract object
+const Contract = await ethers.getContractFactory('Contract');
+const contract = await Contract.attach(<address of deployed contract>);
+
+// Using contract functions
+await contract.function(args);
 ```
